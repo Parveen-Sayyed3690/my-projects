@@ -1,0 +1,3 @@
+I am Parveen Sayyed.
+Course : BSC Computer Science.
+GitHub is a web-based version control and collaboration platform for software developers. It has 8 phases in called as GitHub Lifecycle.
