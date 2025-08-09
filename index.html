@@ -89,13 +89,11 @@
         alert("Please select a mood and write a note.");
         return;
       }
-
       const entry = {
         mood: selectedMood,
         note,
         date: new Date().toLocaleString()
       };
-
       const entries = JSON.parse(localStorage.getItem('moodEntries')) || [];
       entries.unshift(entry); // newest first
       localStorage.setItem('moodEntries', JSON.stringify(entries));
@@ -121,9 +119,10 @@
         container.appendChild(div);
       });
     }
-
+<h1>THANK YOU<h1>
     renderEntries(); // load on page load
   </script>
 </body>
 </html>
+
 
