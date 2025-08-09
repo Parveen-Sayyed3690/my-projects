@@ -1,203 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Meesho Clone</title>
+  <meta charset="UTF-8">
+  <title>Mood Journal</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
       font-family: Arial, sans-serif;
-      line-height: 1.6;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      background: #f0f4f8;
       padding: 20px;
-      background-color: #e72c6a;
-      color: #fff;
+      max-width: 600px;
+      margin: auto;
     }
-
-    header .logo {
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    nav a {
-      margin-left: 20px;
-      color: #fff;
-      text-decoration: none;
-    }
-
-    .hero {
+    h1 {
       text-align: center;
-      background-color: #fce4ec;
-      padding: 60px 20px;
     }
-
-    .hero h1 {
-      font-size: 32px;
+    .mood-select {
+      display: flex;
+      justify-content: space-around;
       margin-bottom: 10px;
-      color: #c2185b;
     }
-
-    .hero p {
-      margin-bottom: 20px;
-    }
-
-    .cta {
-      padding: 10px 20px;
-      background-color: #e91e63;
-      color: white;
-      border: none;
+    .mood {
+      padding: 10px;
+      border-radius: 5px;
       cursor: pointer;
-      border-radius: 4px;
+      font-size: 20px;
+      border: 2px solid transparent;
     }
-
-    .categories {
-      padding: 40px 20px;
-      background-color: #fff;
-      text-align: center;
+    .selected {
+      border-color: #333;
+      background: #dfe6e9;
     }
-
-    .categories h2 {
-      margin-bottom: 20px;
-    }
-
-    .category-grid {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .category {
-      background-color: #f8bbd0;
-      padding: 20px 30px;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-
-    .products {
-      padding: 40px 20px;
-      background-color: #f9f9f9;
-      text-align: center;
-    }
-
-    .products h2 {
-      margin-bottom: 20px;
-    }
-
-    .product-grid {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .product-card {
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      width: 200px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    .product-card img {
+    textarea {
       width: 100%;
-      border-radius: 4px;
+      height: 100px;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
     }
-
-    .product-card h3 {
-      margin: 10px 0;
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
     }
-
-    .download-banner {
-      background-color: #fce4ec;
-      padding: 40px 20px;
-      text-align: center;
+    .entry {
+      background: #fff;
+      border-left: 4px solid #74b9ff;
+      padding: 10px;
+      margin-top: 15px;
     }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #eeeeee;
+    .entry .date {
+      font-size: 12px;
+      color: #555;
+    }
+    .entry .mood {
+      font-size: 18px;
     }
   </style>
 </head>
 <body>
+  <h1>Mood Journal</h1>
+  <div class="mood-select">
+    <div class="mood" data-mood="😊">😊</div>
+    <div class="mood" data-mood="😐">😐</div>
+    <div class="mood" data-mood="😢">😢</div>
+    <div class="mood" data-mood="😠">😠</div>
+  </div>
+  <textarea id="note" placeholder="Write a short note..."></textarea>
+  <button onclick="saveEntry()">Save Mood</button>
+  <h2>Your Entries</h2>
+  <div id="entries"></div>
 
-  <!-- Header -->
-  <header>
-    <div class="logo">Meesho</div>
-    <nav>
-      <a href="#">Women</a>
-      <a href="#">Men</a>
-      <a href="#">Home</a>
-      <a href="#">Electronics</a>
-    </nav>
-  </header>
+  <script>
+    let selectedMood = null;
+    const moodElements = document.querySelectorAll('.mood');
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <h1>Start your business with Zero Investment</h1>
-    <p>Trusted by over 1 crore resellers in India</p>
-    <button class="cta">Download App</button>
-  </section>
+    moodElements.forEach(el => {
+      el.addEventListener('click', () => {
+        moodElements.forEach(m => m.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedMood = el.dataset.mood;
+      });
+    });
 
-  <!-- Categories -->
-  <section class="categories">
-    <h2>Top Categories to Choose From</h2>
-    <div class="category-grid">
-      <div class="category">Sarees</div>
-      <div class="category">Jewellery</div>
-      <div class="category">Kitchen</div>
-      <div class="category">Shoes</div>
-    </div>
-  </section>
+    function saveEntry() {
+      const note = document.getElementById('note').value.trim();
+      if (!selectedMood || !note) {
+        alert("Please select a mood and write a note.");
+        return;
+      }
 
-  <!-- Product Grid -->
-  <section class="products">
-    <h2>Featured Products</h2>
-    <div class="product-grid">
-      <div class="product-card">
-        <img src="https://via.placeholder.com/150" alt="Product">
-        <h3>Stylish Kurti</h3>
-        <p>₹399</p>
-        <button>Share</button>
-      </div>
-      <div class="product-card">
-        <img src="https://via.placeholder.com/150" alt="Product">
-        <h3>Trendy Earrings</h3>
-        <p>₹149</p>
-        <button>Share</button>
-      </div>
-      <div class="product-card">
-        <img src="https://via.placeholder.com/150" alt="Product">
-        <h3>Casual Shoes</h3>
-        <p>₹799</p>
-        <button>Share</button>
-      </div>
-    </div>
-  </section>
+      const entry = {
+        mood: selectedMood,
+        note,
+        date: new Date().toLocaleString()
+      };
 
-  <!-- Download App Banner -->
-  <section class="download-banner">
-    <h2>Download Meesho App Now</h2>
-    <button class="cta">Download</button>
-  </section>
+      const entries = JSON.parse(localStorage.getItem('moodEntries')) || [];
+      entries.unshift(entry); // newest first
+      localStorage.setItem('moodEntries', JSON.stringify(entries));
+      document.getElementById('note').value = '';
+      moodElements.forEach(m => m.classList.remove('selected'));
+      selectedMood = null;
+      renderEntries();
+    }
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Meesho Clone. Built for demo purposes.</p>
-  </footer>
+    function renderEntries() {
+      const entries = JSON.parse(localStorage.getItem('moodEntries')) || [];
+      const container = document.getElementById('entries');
+      container.innerHTML = '';
 
+      entries.forEach(e => {
+        const div = document.createElement('div');
+        div.className = 'entry';
+        div.innerHTML = `
+          <div class="date">${e.date}</div>
+          <div class="mood">${e.mood}</div>
+          <div class="note">${e.note}</div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    renderEntries(); // load on page load
+  </script>
 </body>
 </html>
